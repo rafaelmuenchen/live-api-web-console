@@ -46,14 +46,14 @@ function AltairComponent() {
   useEffect(() => {
     setModel("models/gemini-2.0-flash-exp");
     setConfig({
-      responseModalities: [Modality.AUDIO],
+      responseModalities: [Modality.TEXT],
       speechConfig: {
         voiceConfig: { prebuiltVoiceConfig: { voiceName: "Aoede" } },
       },
       systemInstruction: {
         parts: [
           {
-            text: 'You are my helpful assistant. Any time I ask you for a graph call the "render_altair" function I have provided you. Dont ask for additional information just make your best judgement.',
+            text: 'Você é um transcritor de áudio em tempo real. Responda somente o texto transcrito.',
           },
         ],
       },
