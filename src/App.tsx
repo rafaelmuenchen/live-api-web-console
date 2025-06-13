@@ -19,6 +19,7 @@ import "./App.scss";
 import { LiveAPIProvider } from "./contexts/LiveAPIContext";
 import SidePanel from "./components/side-panel/SidePanel";
 import { Altair } from "./components/altair/Altair";
+import WysiwygEditor from "./components/wysiwyg-editor/WysiwygEditor";
 import ControlTray from "./components/control-tray/ControlTray";
 import cn from "classnames";
 import { LiveClientOptions } from "./types";
@@ -48,6 +49,7 @@ function App() {
             <div className="main-app-area">
               {/* APP goes here */}
               <Altair />
+              <WysiwygEditor filter="conversations" />
               <video
                 className={cn("stream", {
                   hidden: !videoRef.current || !videoStream,
