@@ -88,7 +88,7 @@ export default function SidePanel() {
         )}
       </header>
       <section className="indicators">
-        <Select
+        {/* <Select
           className="react-select"
           classNamePrefix="react-select"
           styles={{
@@ -114,7 +114,7 @@ export default function SidePanel() {
           onChange={(e) => {
             setSelectedOption(e);
           }}
-        />
+        /> */}
         <div className={cn("streaming-indicator", { connected })}>
           {connected
             ? `🔵${open ? " Streaming" : ""}`

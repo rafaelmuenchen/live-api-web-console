@@ -265,15 +265,45 @@ export default function Logger({ filter = "none" }: LoggerProps) {
 
   const filterFn = filters[filter];
 
+  // Concatenate all messages from filtered logs
+  const concatenatedMessages = logs
+    .filter(filterFn)
+    .map((log) => {
+      if (typeof log.message === "string") {
+        return log.message;
+      } else if (typeof log.message === "object") {
+        // Try to extract text from known structures
+        if ("turns" in log.message && Array.isArray(log.message.turns)) {
+          // For ClientContentLogType
+          return log.message.turns
+            .map((part: any) => part.text || "")
+            .join("");
+        }
+        if ("serverContent" in log.message && log.message.serverContent) {
+          const serverContent = log.message.serverContent;
+          if ("modelTurn" in serverContent && serverContent.modelTurn?.parts) {
+            return serverContent.modelTurn.parts
+              .map((part: any) => part.text || "")
+              .join("");
+          }
+        }
+        // Fallback: stringify the object
+        return JSON.stringify(log.message);
+      }
+      return "";
+    })
+    .filter(Boolean)
+    .join("");
+
   return (
     <div className="logger">
-      <ul className="logger-list">
-        {logs.filter(filterFn).map((log, key) => {
-          return (
-            <LogEntry MessageComponent={component(log)} log={log} key={key} />
-          );
-        })}
-      </ul>
+      <div className="logger-concatenated-message" style={{ padding: "24px" }}>
+        {concatenatedMessages
+          .replaceAll(".", ". ")
+          .replaceAll("?", "? ")
+          .replaceAll("!", "! ")
+          .replaceAll("  ", " ")}
+      </div>
     </div>
   );
 }
